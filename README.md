@@ -1,2 +1,2 @@
-# P_Ex_AppWeb
+# Practicas_Experimentales_AppWeb
 Repositorio para las practicas experimentales grupales 
