@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Aplicación web PFC — Aplicaciones Web UTEQ" />
+  <title>PFC — Aplicaciones Web UTEQ</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <!-- Leaflet.js CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+
+  <!-- Skip link para accesibilidad (teclado) -->
+  <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
+
+  <header role="banner">
+    <nav role="navigation" aria-label="Navegación principal">
+      <ul>
+        <li><a href="#seccion-formulario">Registro</a></li>
+        <li><a href="#seccion-registros">Registros</a></li>
+        <li><a href="#seccion-apis">APIs</a></li>
+        <li><a href="#seccion-mapa">Mapa</a></li>
+      </ul>
+      <button id="btn-theme" aria-label="Cambiar tema" title="Cambiar tema oscuro/claro">🌓</button>
+    </nav>
+  </header>
+
+  <main id="main-content" role="main">
+
+    <!-- ═══ SECCIÓN 1: FORMULARIO DE REGISTRO ═══ -->
+    <section id="seccion-formulario" aria-labelledby="titulo-formulario">
+      <h1 id="titulo-formulario">Formulario de Registro</h1>
+      <form id="form-registro" novalidate aria-label="Formulario de registro de usuario">
+
+        <!-- INPUT 1: text -->
+        <div class="campo-grupo">
+          <label for="nombre">Nombre completo *</label>
+          <input type="text" id="nombre" name="nombre"
+                 required minlength="3" maxlength="60"
+                 aria-describedby="nombre-error"
+                 placeholder="Ej. Juan Pérez" />
+          <span id="nombre-error" class="error-msg" role="alert" aria-live="polite"></span>
+        </div>
+
+        <!-- INPUT 2: email -->
+        <div class="campo-grupo">
+          <label for="email">Correo electrónico *</label>
+          <input type="email" id="email" name="email"
+                 required aria-describedby="email-error" placeholder="ejemplo@correo.com" />
+          <span id="email-error" class="error-msg" role="alert" aria-live="polite"></span>
+        </div>
+
+        <!-- INPUT 3: password -->
+        <div class="campo-grupo">
+          <label for="password">Contraseña *</label>
+          <input type="password" id="password" name="password"
+                 required minlength="8"
+                 pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                 aria-describedby="password-ayuda password-error" placeholder="Tu contraseña secreta" />
+          <small id="password-ayuda">Mínimo 8 caracteres, una mayúscula y un número.</small>
+          <span id="password-error" class="error-msg" role="alert" aria-live="polite"></span>
+        </div>
+
+        <!-- INPUT 4: tel -->
+        <div class="campo-grupo">
+          <label for="telefono">Teléfono</label>
+          <input type="tel" id="telefono" name="telefono"
+                 pattern="[0-9]{7,15}"
+                 aria-describedby="telefono-error"
+                 placeholder="Ej. 0999123456" />
+          <span id="telefono-error" class="error-msg" role="alert" aria-live="polite"></span>
+        </div>
+
+        <!-- INPUT 5: date -->
+        <div class="campo-grupo">
+          <label for="fecha-nacimiento">Fecha de nacimiento *</label>
+          <input type="date" id="fecha-nacimiento" name="fecha_nacimiento"
+                 required max="2008-01-01"
+                 aria-describedby="fecha-error" />
+          <span id="fecha-error" class="error-msg" role="alert" aria-live="polite"></span>
+        </div>
+
+        <!-- INPUT 6: number -->
+        <div class="campo-grupo">
+          <label for="edad">Edad *</label>
+          <input type="number" id="edad" name="edad"
+                 required min="16" max="120"
+                 aria-describedby="edad-error" placeholder="Ej. 25" />
+          <span id="edad-error" class="error-msg" role="alert" aria-live="polite"></span>
+        </div>
+
+        <!-- INPUT 7: range -->
+        <div class="campo-grupo">
+          <label for="nivel">Nivel de experiencia: <output for="nivel" id="nivel-valor">5</output>/10</label>
+          <input type="range" id="nivel" name="nivel"
+                 min="1" max="10" value="5"
+                 aria-describedby="nivel-ayuda" />
+          <small id="nivel-ayuda">Desliza para indicar tu nivel (1=principiante, 10=experto).</small>
+        </div>
+
+        <!-- INPUT 8: file -->
+        <div class="campo-grupo">
+          <label for="avatar">Foto de perfil</label>
+          <input type="file" id="avatar" name="avatar"
+                 accept="image/*"
+                 aria-describedby="avatar-ayuda" />
+          <small id="avatar-ayuda">Formatos permitidos: JPG, PNG, WEBP.</small>
+        </div>
+
+        <!-- INPUT 9: radio (bonus) -->
+        <fieldset>
+          <legend>Género</legend>
+          <label for="genero-masculino"><input type="radio" id="genero-masculino" name="genero" value="masculino" /> Masculino</label>
+          <label for="genero-femenino"><input type="radio" id="genero-femenino" name="genero" value="femenino" /> Femenino</label>
+          <label for="genero-otro"><input type="radio" id="genero-otro" name="genero" value="otro" /> Otro / Prefiero no decir</label>
+        </fieldset>
+
+        <!-- INPUT 10: checkbox (bonus) -->
+        <div class="campo-grupo">
+          <label for="terminos">
+            <input type="checkbox" id="terminos" name="terminos" required
+                   aria-describedby="terminos-error" />
+            Acepto los <a href="#terminos-texto">términos y condiciones</a> *
+          </label>
+          <span id="terminos-error" class="error-msg" role="alert" aria-live="polite"></span>
+        </div>
+
+        <!-- INPUT 11: select (bonus) -->
+        <div class="campo-grupo">
+          <label for="provincia">Provincia</label>
+          <select id="provincia" name="provincia" aria-describedby="provincia-error">
+            <option value="">— Selecciona —</option>
+            <option value="guayas">Guayas</option>
+            <option value="pichincha">Pichincha</option>
+            <option value="manabi">Manabí</option>
+          </select>
+          <span id="provincia-error" class="error-msg" role="alert" aria-live="polite"></span>
+        </div>
+
+        <!-- INPUT 12: textarea (bonus) -->
+        <div class="campo-grupo">
+          <label for="bio">Biografía breve</label>
+          <textarea id="bio" name="bio" rows="4"
+                    maxlength="300" aria-describedby="bio-ayuda" placeholder="Cuéntanos un poco sobre ti..."></textarea>
+          <small id="bio-ayuda">Máximo 300 caracteres.</small>
+        </div>
+
+        <button type="submit">Registrar</button>
+        <button type="reset">Limpiar</button>
+
+      </form>
+    </section>
+
+    <!-- ═══ SECCIÓN 2: TABLA DE REGISTROS ═══ -->
+    <section id="seccion-registros" aria-labelledby="titulo-registros">
+      <h2 id="titulo-registros">Registros guardados</h2>
+      <div id="controles-registros">
+        <button id="btn-limpiar-registros" aria-label="Limpiar todos los registros guardados">
+          🗑 Limpiar todos
+        </button>
+        <output id="contador-registros" aria-live="polite">0 registros</output>
+      </div>
+
+      <div id="tabla-wrapper" role="region" aria-label="Lista de registros" tabindex="0">
+        <table id="tabla-registros" aria-describedby="contador-registros">
+          <caption>Registros guardados en esta sesión</caption>
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Nombre</th>
+              <th scope="col">Email</th>
+              <th scope="col">Teléfono</th>
+              <th scope="col">Fecha nac.</th>
+              <th scope="col">Provincia</th>
+              <th scope="col">Nivel</th>
+              <th scope="col">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-registros">
+            <!-- Filas generadas por ui.js al cargar y al guardar -->
+          </tbody>
+        </table>
+        <p id="estado-vacio" class="estado-vacio" hidden>
+          No hay registros aún. ¡Completa el formulario!
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══ SECCIÓN 3: CONSUMO DE APIs ═══ -->
+    <section id="seccion-apis" aria-labelledby="titulo-apis">
+      <h2 id="titulo-apis">Datos en tiempo real</h2>
+
+      <article id="widget-coffee" aria-labelledby="titulo-coffee">
+        <h3 id="titulo-coffee">☕ Café Aleatorio</h3>
+      </article>
+
+      <article id="widget-nasa" aria-labelledby="titulo-nasa">
+        <h3 id="titulo-nasa"> Imagen del día — NASA APOD</h3>
+      </article>
+
+      <article id="widget-phrase" aria-labelledby="titulo-phrase">
+        <h3 id="titulo-phrase"> Frase Positiva</h3>
+      </article>
+    </section>
+
+    <!-- ═══ SECCIÓN 4: MAPA INTERACTIVO LEAFLET ═══ -->
+    <section id="seccion-mapa" aria-labelledby="titulo-mapa">
+      <h2 id="titulo-mapa">📍 Mapa interactivo</h2>
+
+      <div class="map-card">
+        
+        <div class="map-layout-wrapper">
+          <!-- Caja del mapa -->
+          <div class="map-container">
+            <div id="map"></div>
+          </div>
+
+          <!-- Panel de marcar área (oculto por defecto) -->
+          <div id="marked-container" class="marked-container">
+            <div class="marked-header">
+              <h3>Registrar Área en el Mapa</h3>
+              <button id="close-marker-panel" class="close-marker-panel" aria-label="Cerrar panel de registro">✖</button>
+            </div>
+            
+            <div class="marker-fields">
+              <div class="campo-grupo">
+                <label for="markerName">Nombre del Área *</label>
+                <input id="markerName" type="text" placeholder="Ej. Entrada principal, Aula 10" />
+              </div>
+              <div class="marker-fields-row">
+                <div class="campo-grupo">
+                  <label for="latitude">Latitud</label>
+                  <input id="latitude" type="text" readonly />
+                </div>
+                <div class="campo-grupo">
+                  <label for="longitude">Longitud</label>
+                  <input id="longitude" type="text" readonly />
+                </div>
+              </div>
+            </div>
+            
+            <button id="saveMarker">Guardar Ubicación</button>
+          </div>
+        </div>
+
+        <!-- Registro de ubicaciones guardadas -->
+        <div class="marked-locations-container">
+          <h3>Registro de Ubicaciones</h3>
+          <ul id="markedLocations">
+            <!-- Dinámico -->
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══ SECCIÓN LATERAL: INFORMACIÓN ADICIONAL ═══ -->
+    <aside id="info-adicional" aria-labelledby="titulo-info-adicional">
+      <h3 id="titulo-info-adicional">Información de la Práctica</h3>
+      <p>
+        Esta aplicación web experimental ha sido desarrollada bajo las directrices de la guía de práctica de la <strong>UTEQ</strong>, cumpliendo con los estándares de accesibilidad WCAG 2.1 nivel AA y utilizando una arquitectura modular ES6 para la gestión dinámica del DOM.
+      </p>
+    </aside>
+
+  </main>
+
+  <footer role="contentinfo">
+    <p>UTEQ · Facultad de Ciencias de la Computación · Aplicaciones Web 2026</p>
+  </footer>
+
+  <!-- Leaflet.js JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Scripts como módulos ES6 -->
+  <script type="module" src="js/app.js"></script>
+
+  <!-- Modal de confirmación para eliminar (Accesible - WCAG) -->
+  <div id="modal-confirmacion" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-titulo" aria-describedby="modal-descripcion" hidden>
+    <div class="modal-contenido">
+      <h3 id="modal-titulo">Confirmar eliminación</h3>
+      <p id="modal-descripcion">¿Estás seguro de que deseas eliminar este registro? Esta acción no se puede deshacer.</p>
+      <div class="modal-acciones">
+        <button id="modal-btn-confirmar" class="btn-danger">Eliminar</button>
+        <button id="modal-btn-cancelar">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
